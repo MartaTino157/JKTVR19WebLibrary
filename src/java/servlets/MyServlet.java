@@ -5,26 +5,35 @@
  */
 package servlets;
 
+import entity.Book;
+import entity.Reader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import session.BookFacade;
+import session.ReaderFacade;
 
 /**
  *
  * @author pupil
  */
 @WebServlet(name = "MyServlet", urlPatterns = {
-    "/MyServlet",
-    "/Page1",
-    "/Page2",
-    "/Page3"
+    "/addBook",
+    "/createBook",
+    "/addReader",
+    "/createReader"
     
 })
 public class MyServlet extends HttpServlet {
+    @EJB
+    private BookFacade bookFacade;
+    @EJB
+    private ReaderFacade readerFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,19 +47,55 @@ public class MyServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         String path = request.getServletPath();
-        if("/MyServlet".equals(path)){
-            request.setAttribute("info", "Hello everybody!");
-            request.getRequestDispatcher("/WEB-INF/myServlet.jsp").forward(request, response);
-        }else if("/Page1".equals(path)){
-            request.setAttribute("info", "This text created with Servlet");
-            request.getRequestDispatcher("/WEB-INF/page1.jsp").forward(request, response);
-        }else if("/Page2".equals(path)){
-            request.setAttribute("info", "This text created with Servlet on the Page 2");
-            request.getRequestDispatcher("/WEB-INF/page2.jsp").forward(request, response);
-        }else if("/Page3".equals(path)){
-            request.setAttribute("info", "This text created with Servlet on the Page 3");
-            request.getRequestDispatcher("/page3.jsp").forward(request, response);
+        switch (path) {
+            case "/addBook":
+                request.getRequestDispatcher("/WEB-INF/addBookForm.jsp").forward(request, response);
+                break;
+            case "/createBook":
+                String name = request.getParameter("name");
+                String author = request.getParameter("author");
+                String publishedYear = request.getParameter("publishedYear");
+                if("".equals(name) || name == null
+                        ||"".equals(author) || author == null
+                        ||"".equals(publishedYear) || publishedYear == null){
+                    request.setAttribute("name", name);
+                    request.setAttribute("author", author);
+                    request.setAttribute("publishedYear", publishedYear);
+                    request.setAttribute("info", "Заполните все поля");
+                    request.getRequestDispatcher("/WEB-INF/addBookForm.jsp").forward(request, response);
+                    break;
+                }   
+                Book book = new Book(name, author, publishedYear);
+                bookFacade.create(book);
+                request.setAttribute("info", "Данные книги \"" + book.getName() + "\" получены");
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                break;
+            case "/addReader":
+                request.getRequestDispatcher("/WEB-INF/addReaderForm.jsp").forward(request, response);
+                break;
+            case "/createReader":
+                String firstname = request.getParameter("firstname");
+                String lastname = request.getParameter("lastname");
+                String phone = request.getParameter("phone");
+                if("".equals(lastname) || lastname == null
+                        ||"".equals(lastname) || lastname == null
+                        ||"".equals(phone) || phone == null){
+                    request.setAttribute("firstname", lastname);
+                    request.setAttribute("lastname", lastname);
+                    request.setAttribute("phone", phone);
+                    request.setAttribute("info", "Заполните все поля");
+                    request.getRequestDispatcher("/WEB-INF/addReaderForm.jsp").forward(request, response);
+                    break;
+                }
+                Reader reader = new Reader(firstname, lastname, phone);
+                readerFacade.create(reader);
+                request.setAttribute("info", "Читатель \"" + reader.getFirstname()+" "+ reader.getLastname() + "\" добавлен");
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                break;
+            default:
+                break;
         }
     }
 
