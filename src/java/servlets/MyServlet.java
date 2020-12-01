@@ -114,8 +114,7 @@ public class MyServlet extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/addReaderForm.jsp").forward(request, response);
                     break;
                 }
-                //request.getRequestDispatcher("/WEB-INF/addUserForm.jsp").forward(request, response);
-                //request.getRequestDispatcher("/index.jsp").forward(request, response);
+                Reader reader = new Reader(firstname, lastname, phone);
 
                 String login = request.getParameter("login");
                 String password = request.getParameter("password");
@@ -130,7 +129,6 @@ public class MyServlet extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/addUserForm.jsp").forward(request, response);
                     break;
                 }
-                Reader reader = new Reader(firstname, lastname, phone);
                 User user = new User(login, password, role, reader);
                 readerFacade.create(reader);
                 userFacade.create(user);

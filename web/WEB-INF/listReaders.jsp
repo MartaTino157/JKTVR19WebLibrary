@@ -3,7 +3,7 @@
     Created on : Dec 1, 2020, 10:17:28 AM
     Author     : pupil
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,12 +13,14 @@
     </head>
     <body>
         <h1>Список пользователей</h1>
-        <ul>
+        <ol>
             <c:forEach var="reader" items="${listReaders}" varStatus="status">
                 <li>
-                    ${status.index+1}. ${reader.firstname}. ${reader.lastname}. ${reader.phone}
+                    ${reader.firstname} ${reader.lastname}. <br>
+                    Номер телефона: ${reader.phone}
                 </li>
             </c:forEach>
-        </ul>
+        </ol>
+        <a href="index.jsp">Home</a>
     </body>
 </html>

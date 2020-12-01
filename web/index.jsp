@@ -19,6 +19,7 @@
         <a href="listBooks">Список книг</a>
         <br>
         <a href="addReader">Добавить читателя</a>
-        
+        <br>
+        <a href="listReaders">Список читателей</a>
     </body>
 </html>

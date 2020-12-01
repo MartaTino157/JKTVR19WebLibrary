@@ -14,12 +14,13 @@
     </head>
     <body>
         <h1>Список книг</h1>
-        <ul>
+        <ol>
             <c:forEach var="book" items="${listBooks}" varStatus="status">
                 <li>
-                    ${status.index+1}.<b>${book.name}. </b> ${book.author}. ${book.publishedYear}
+                    <b>${book.name}. </b> ${book.author}. ${book.publishedYear}
                 </li>
             </c:forEach>
-        </ul>
+        </ol>
+        <a href="index.jsp">Home</a>
     </body>
 </html>
