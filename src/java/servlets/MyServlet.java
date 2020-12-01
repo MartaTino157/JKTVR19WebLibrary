@@ -1,14 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Адгоритм создания web-приложения на java
+ * 
+ * 1. Создать WebApplication в NetBeans
+ * 2. Создать сущностные классы с аннотациями в пакете Source Packeges/entity 
+ * 3. Создать БД и настроить persistance.xml
+ * 4. Создать сессионные Java Enterprice Beans для каждого сущностного класса с помощью помощника NetBeans()
+ * 5. Создать страницы в формате jsp в разделе Web pages/WEB-INF 
+ *    (папка служит для сокрытия ресурсов от прямого доступа через url)
+ * 6. Создать сервлет "MyServlet" в папке Source Pakages/servlets
+ * 7. Настроить параметр аннотации @WebServlet(urlPatterns={...})
+ *    При запросе клиентя содержащего эти параметры будет выполняться метод ProcessRequest сервлета "MyServlet",
+ *    который управляется веб-контейнером
+ * 8. Получить текущий запрос из запроса "path"
+ * 9. Обработать запрос через switch и, с помощью метода getRequestDispatcher(), отдать страничку jsp с данными клиенту.
+ *    Например:
+ *      request.getRequestDispatcher("/WEB-INF/addBookForm.jsp").forward(request, response);
+ * 10. Для получения объектов классов "фасадов" использовать аннотацию @EJB в поле класса "MyServlet"
  */
 package servlets;
-
 import entity.Book;
 import entity.Reader;
+import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import session.BookFacade;
 import session.ReaderFacade;
+import session.UserFacade;
 
 /**
  *
@@ -25,8 +41,10 @@ import session.ReaderFacade;
 @WebServlet(name = "MyServlet", urlPatterns = {
     "/addBook",
     "/createBook",
+    "/listBooks",
     "/addReader",
-    "/createReader"
+    "/createReader",
+    "/listReaders"
     
 })
 public class MyServlet extends HttpServlet {
@@ -34,6 +52,8 @@ public class MyServlet extends HttpServlet {
     private BookFacade bookFacade;
     @EJB
     private ReaderFacade readerFacade;
+    @EJB
+    private UserFacade userFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,7 +67,7 @@ public class MyServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8"); // прописываем utf здесь
         String path = request.getServletPath();
         switch (path) {
             case "/addBook":
@@ -69,8 +89,13 @@ public class MyServlet extends HttpServlet {
                 }   
                 Book book = new Book(name, author, publishedYear);
                 bookFacade.create(book);
-                request.setAttribute("info", "Данные книги \"" + book.getName() + "\" получены");
+                request.setAttribute("info", "Книга \"" + book.getName() + "\" добавлена");
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
+                break;
+            case "/listBooks":
+                List<Book> listBooks = bookFacade.findAll();
+                request.setAttribute("listBooks", listBooks);
+                request.getRequestDispatcher("/listBooks.jsp").forward(request, response);
                 break;
             case "/addReader":
                 request.getRequestDispatcher("/WEB-INF/addReaderForm.jsp").forward(request, response);
@@ -89,10 +114,33 @@ public class MyServlet extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/addReaderForm.jsp").forward(request, response);
                     break;
                 }
+                //request.getRequestDispatcher("/WEB-INF/addUserForm.jsp").forward(request, response);
+                //request.getRequestDispatcher("/index.jsp").forward(request, response);
+
+                String login = request.getParameter("login");
+                String password = request.getParameter("password");
+                String role = request.getParameter("role");
+                if("".equals(login) || login == null
+                        ||"".equals(password) || password == null
+                        ||"".equals(role) || role == null){
+                    request.setAttribute("login", login);
+                    request.setAttribute("password", password);
+                    request.setAttribute("role", role);
+                    request.setAttribute("info", "Заполните все поля");
+                    request.getRequestDispatcher("/WEB-INF/addUserForm.jsp").forward(request, response);
+                    break;
+                }
                 Reader reader = new Reader(firstname, lastname, phone);
+                User user = new User(login, password, role, reader);
                 readerFacade.create(reader);
-                request.setAttribute("info", "Читатель \"" + reader.getFirstname()+" "+ reader.getLastname() + "\" добавлен");
+                userFacade.create(user);
+                request.setAttribute("info", "Пользователь \"" + reader.getFirstname()+" "+ reader.getLastname() + "\" добавлен");
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
+                break;
+            case "/listReaders":
+                List<Reader> listReaders = readerFacade.findAll();
+                request.setAttribute("listReaders", listReaders);
+                request.getRequestDispatcher("/WEB-INF/listReaders.jsp").forward(request, response);
                 break;
             default:
                 break;

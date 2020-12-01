@@ -15,11 +15,11 @@
         <div>Добавление читателя</div>
         <p>${info}</p>
         <br>
+        <a href="WEB-INF/addReaderForm.jsp">Назад</a><br>
         <a href="index.jsp">Home</a><br>
+        <h3>Шаг 2: Регистрация пользователя</h3>
         <form action="createReader" method="POST">
-            Имя: <input type="text" name="firstname" value="${firstname}"><br>
-            Фамилия: <input type="text" name="lastname" value="${lastname}"><br>
-            Номер телефона: <input type="text" name="phone" value="${phone}"><br><br>
+
             Логин: <input type="text" name="login" value="${login}"><br>
             Пароль: <input type="text" name="password" value="${password}"><br>
             
