@@ -17,7 +17,7 @@
         <ol>
             <c:forEach var="book" items="${listBooks}" varStatus="status">
                 <li>
-                    <b>${book.name}. </b> ${book.author}. ${book.publishedYear}
+                    <b>${book.name}. </b> ${book.author}. ${book.publishedYear} 
                 </li>
             </c:forEach>
         </ol>

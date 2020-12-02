@@ -14,12 +14,23 @@
     <body>
         <h1>Наша библиотека</h1>
         <p>${info}</p>
-        <a href="addBook">Добавить книгу</a>
-        <br>
-        <a href="listBooks">Список книг</a>
-        <br>
-        <a href="addReader">Добавить читателя</a>
-        <br>
-        <a href="listReaders">Список читателей</a>
+        <p>
+            <a href="addBook">Добавить книгу</a>
+        </p>
+        <p>
+            <a href="listBooks">Список книг</a>
+        </p>
+        <p>
+            <a href="addReader">Добавить читателя</a>
+        </p>
+        <p>
+            <a href="listReaders">Список читателей</a>
+        </p>
+        <p>
+            <a href="takeOnBookForm">Выдать книгу</a>
+        </p>
+        <p>
+            <a href="returnBookForm">Вернуть книгу</a>
+        </p>
     </body>
 </html>
