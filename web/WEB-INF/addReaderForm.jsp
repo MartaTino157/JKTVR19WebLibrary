@@ -14,20 +14,16 @@
     <body>
         <h2>Добавление читателя</h2>
         <p>${info}</p>
-        <!--<h3>Шаг 1: Ввод личных данных</h3>-->
-        <form action="createReader" method="POST">
+        <h3>Шаг 1: Ввод личных данных</h3>
+        <form action="registration" method="POST">
             Имя: <input type="text" name="firstname" value="${firstname}"><br>
             Фамилия: <input type="text" name="lastname" value="${lastname}"><br>
             Номер телефона: <input type="text" name="phone" value="${phone}"><br><br>
             
-<!--        <h3>Шаг 2: Регистрация пользователя</h3>
+        <h3>Шаг 2: Регистрация пользователя</h3>
             Логин: <input type="text" name="login" value="${login}"><br>
-            Пароль: <input type="text" name="password" value="${password}"><br>
+            Пароль: <input type="text" name="password" value="${password}"><br><br>
             
-            Роль: <select name="role" value="${role}">
-                <option value="reader">Читатель</option>
-                <option value="manager">Менеджер</option>
-            </select><br><br>-->
             <input type="submit" name="submit" value="Добавить пользователя"><br>
         </form>
             <a href="index.jsp">Home</a>

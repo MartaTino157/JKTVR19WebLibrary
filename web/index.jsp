@@ -15,13 +15,19 @@
         <h1>Наша библиотека</h1>
         <p>${info}</p>
         <p>
+            <a href="loginForm">Войти в систему</a>
+        </p>
+        <p>
+            <a href="logout">Выйти из системы</a>
+        </p>
+        <p>
             <a href="addBook">Добавить книгу</a>
         </p>
         <p>
             <a href="listBooks">Список книг</a>
         </p>
         <p>
-            <a href="addReader">Добавить читателя</a>
+            <a href="registrationForm">Добавить читателя</a>
         </p>
         <p>
             <a href="listReaders">Список читателей</a>
