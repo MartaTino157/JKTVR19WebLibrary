@@ -13,6 +13,7 @@
     </head>
     <body>
         <h1>Введите логин и пароль</h1>
+        <p>${info}</p>
         <form action="login" method="POST">
             Логин: <input type="text" name="login" value=""><br>
             Пароль: <input type="password" name="password" value=""><br><br>
